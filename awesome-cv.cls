@@ -351,8 +351,8 @@
 \newcommand{\acvHeaderAfterAddressSkip}{-.5mm}
 \newcommand{\acvHeaderIconSep}{~}
 \newcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
-\newcommand{\acvHeaderAfterSocialSkip}{6mm}
-\newcommand{\acvHeaderAfterQuoteSkip}{5mm}
+\newcommand{\acvHeaderBeforeQuoteSkip}{6mm}
+\newcommand{\acvHeaderAfterSkip}{5mm}
 
 % Others
 \newcommand{\acvSectionTopSkip}{3mm}
@@ -380,109 +380,106 @@
 % Define a header for CV
 % Usage: \makecvheader
 \newcommand*{\makecvheader}{%
-\setlength{\fboxsep}{3pt}
-\setlength{\fboxrule}{0.05pt}
+  \newsavebox{\cvHeaderPhotoBox}
+  \savebox{\cvHeaderPhotoBox}{
+    \ifthenelse{\isundefined{\@photowidth}}
+      {}
+      {\begin{minipage}[c]{\@photowidth}\includegraphics[width=\@photowidth]{\@photo}\end{minipage}}
+  }
 
-\newlength{\cvHeaderTextWidth}
-\ifthenelse{\isundefined{\@photowidth}}
-  {\setlength{\cvHeaderTextWidth}{\textwidth}}
-  {\setlength{\cvHeaderTextWidth}{\textwidth-\@photowidth-20pt}}
+  \newlength{\cvHeaderTextWidth}
+  \ifthenelse{\isundefined{\@photowidth}}
+    {\setlength{\cvHeaderTextWidth}{\textwidth}}
+    {\setlength{\cvHeaderTextWidth}{\textwidth-\widthof{\usebox{\cvHeaderPhotoBox}}}}
 
-\newsavebox{\cvHeaderTextBox}
-\savebox{\cvHeaderTextBox}{
-  \begin{minipage}[c]{\cvHeaderTextWidth}
-    \begin{center}
-      \headerfirstnamestyle{\@firstname}\headerlastnamestyle{{}\acvHeaderNameDelim\@lastname}%
-      \\[\acvHeaderAfterNameSkip]%
-      \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position\\[\acvHeaderAfterPositionSkip]}}%
-      \ifthenelse{\isundefined{\@address}}{}{\headeraddressstyle{\@address\\[\acvHeaderAfterAddressSkip]}}%
-      \headersocialstyle{%
-        \newbool{isstart}%
-        \setbool{isstart}{true}%
-        \ifthenelse{\isundefined{\@mobile}}%
+  \newsavebox{\cvHeaderTextBox}
+  \savebox{\cvHeaderTextBox}{
+    \begin{minipage}[c]{\cvHeaderTextWidth}
+      \begin{center}
+        \headerfirstnamestyle{\@firstname}\headerlastnamestyle{{}\acvHeaderNameDelim\@lastname}%
+        \\[\acvHeaderAfterNameSkip]%
+        \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position\\[\acvHeaderAfterPositionSkip]}}%
+        \ifthenelse{\isundefined{\@address}}{}{\headeraddressstyle{\@address\\[\acvHeaderAfterAddressSkip]}}%
+        \headersocialstyle{%
+          \newbool{isstart}%
+          \setbool{isstart}{true}%
+          \ifthenelse{\isundefined{\@mobile}}%
+            {}%
+            {%
+              \faMobile\acvHeaderIconSep\@mobile%
+              \setbool{isstart}{false}%
+            }%
+          \ifthenelse{\isundefined{\@email}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \href{mailto:\@email}{\faEnvelope\acvHeaderIconSep\@email}%
+            }%
+          \ifthenelse{\isundefined{\@homepage}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \href{http://\@homepage}{\faHome\acvHeaderIconSep\@homepage}%
+            }%
+          \ifthenelse{\isundefined{\@github}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \href{https://github.com/\@github}{\faGithubSquare\acvHeaderIconSep\@github}%
+            }%
+          \ifthenelse{\isundefined{\@stackoverflowid}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \href{https://stackoverflow.com/users/\@stackoverflowid}{\faStackOverflow\acvHeaderIconSep\@stackoverflowname}%
+            }%
+          \ifthenelse{\isundefined{\@linkedin}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \href{https://www.linkedin.com/in/\@linkedin}{\faLinkedinSquare\acvHeaderIconSep\@linkedin}%
+            }%
+          \ifthenelse{\isundefined{\@twitter}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \href{https://twitter.com/\@twitter}{\faTwitter\acvHeaderIconSep\@twitter}%
+            }%
+          \ifthenelse{\isundefined{\@skype}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \faSkype\acvHeaderIconSep\@skype%
+            }%
+          \ifthenelse{\isundefined{\@reddit}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \href{https://www.reddit.com/user/\@reddit}{\faReddit\acvHeaderIconSep\@reddit}%
+            }%
+          \ifthenelse{\isundefined{\@xing}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \href{https://www.xing.com/profile/\@xing}{\faXingSquare\acvHeaderIconSep\@xing}
+            }%
+          \ifthenelse{\isundefined{\@extrainfo}}%
+            {}%
+            {%
+              \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+              \@extrainfo%
+            }%
+        }\\%
+        \ifthenelse{\isundefined{\@quote}}%
           {}%
-          {%
-            \faMobile\acvHeaderIconSep\@mobile%
-            \setbool{isstart}{false}%
-          }%
-        \ifthenelse{\isundefined{\@email}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \href{mailto:\@email}{\faEnvelope\acvHeaderIconSep\@email}%
-          }%
-        \ifthenelse{\isundefined{\@homepage}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \href{http://\@homepage}{\faHome\acvHeaderIconSep\@homepage}%
-          }%
-        \ifthenelse{\isundefined{\@github}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \href{https://github.com/\@github}{\faGithubSquare\acvHeaderIconSep\@github}%
-          }%
-        \ifthenelse{\isundefined{\@stackoverflowid}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \href{https://stackoverflow.com/users/\@stackoverflowid}{\faStackOverflow\acvHeaderIconSep\@stackoverflowname}%
-          }%
-        \ifthenelse{\isundefined{\@linkedin}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \href{https://www.linkedin.com/in/\@linkedin}{\faLinkedinSquare\acvHeaderIconSep\@linkedin}%
-          }%
-        \ifthenelse{\isundefined{\@twitter}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \href{https://twitter.com/\@twitter}{\faTwitter\acvHeaderIconSep\@twitter}%
-          }%
-        \ifthenelse{\isundefined{\@skype}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \faSkype\acvHeaderIconSep\@skype%
-          }%
-        \ifthenelse{\isundefined{\@reddit}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \href{https://www.reddit.com/user/\@reddit}{\faReddit\acvHeaderIconSep\@reddit}%
-          }%
-        \ifthenelse{\isundefined{\@xing}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \href{https://www.xing.com/profile/\@xing}{\faXingSquare\acvHeaderIconSep\@xing}
-          }%
-        \ifthenelse{\isundefined{\@extrainfo}}%
-          {}%
-          {%
-            \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-            \@extrainfo%
-          }%
-      } \\[\acvHeaderAfterSocialSkip]%
-      \ifthenelse{\isundefined{\@quote}}%
-        {}%
-        {\headerquotestyle{\@quote\\}}%
-    \end{center}
-  \end{minipage}
-}
+          {\vspace{\acvHeaderBeforeQuoteSkip}\headerquotestyle{\@quote\\}}%
+      \end{center}
+    \end{minipage}
+  }
 
-\newsavebox{\cvHeaderPhotoBox}
-\savebox{\cvHeaderPhotoBox}{\begin{minipage}[c]{\@photowidth}\includegraphics[width=\@photowidth]{\@photo}\end{minipage}}
-
-\parbox{\textwidth}{
-\usebox{\cvHeaderTextBox}
-\usebox{\cvHeaderPhotoBox}
-}
-\ifthenelse{\isundefined{\@quote}}%
-  {}%
-  {\vspace{\acvHeaderAfterQuoteSkip}}%
+  \usebox{\cvHeaderTextBox}
+  \usebox{\cvHeaderPhotoBox}
+  \vspace{\acvHeaderAfterSkip}
 }
 
 % Define a footer for CV
