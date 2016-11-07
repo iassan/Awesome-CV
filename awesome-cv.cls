@@ -78,15 +78,16 @@
 \RequirePackage[default,opentype]{sourcesanspro}
 % Needed to deal a paragraphs
 \RequirePackage{parskip}
-% Needed to deal hyperlink
-\RequirePackage[hidelinks,unicode]{hyperref}
-\hypersetup{%
-  pdftitle={},
-  pdfauthor={},
-  pdfsubject={},
-  pdfkeywords={}
+\AtEndPreamble{
+  % Needed to deal hyperlink
+  \RequirePackage[hidelinks,unicode]{hyperref}
+  \hypersetup{%
+      pdfauthor     = {\@firstname{}~\@lastname{}},
+      pdftitle      = {\@firstname{}~\@lastname{}\notblank{\@position}{ -- \@position}{}},
+      pdfsubject    = {Resum\'{e} of \@firstname{}~\@lastname{}},
+      pdfkeywords   = {\@firstname{}~\@lastname{}, curriculum vit\ae{}, resum\'{e}, Lebenslauf}
+  }
 }
-
 
 %-------------------------------------------------------------------------------
 %                Configuration for directory locations
@@ -421,6 +422,7 @@
               \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
               \href{http://\@homepage}{\faHome\acvHeaderIconSep\@homepage}%
             }%
+          \setbool{isstart}{true}\\%
           \ifthenelse{\isundefined{\@github}}%
             {}%
             {%
