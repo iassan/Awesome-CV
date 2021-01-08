@@ -80,13 +80,15 @@
 \RequirePackage[skins]{tcolorbox}
 % Needed to deal a paragraphs
 \RequirePackage{parskip}
-% Needed to deal hyperlink
-\RequirePackage[hidelinks,unicode]{hyperref}
-\hypersetup{%
-  pdftitle={},
-  pdfauthor={},
-  pdfsubject={},
-  pdfkeywords={}
+\AtEndPreamble{
+  % Needed to deal hyperlink
+  \RequirePackage[hidelinks,unicode]{hyperref}
+  \hypersetup{%
+    pdfauthor     = {\@firstname{}~\@lastname{}},
+    pdftitle      = {\@firstname{}~\@lastname{}\notblank{\@position}{ -- \@position}{}},
+    pdfsubject    = {Resum\'{e} of \@firstname{}~\@lastname{}},
+    pdfkeywords   = {\@firstname{}~\@lastname{}, curriculum vit\ae{}, resum\'{e}, Lebenslauf}
+  }
 }
 
 %-------------------------------------------------------------------------------
@@ -372,11 +374,11 @@
 %-------------------------------------------------------------------------------
 %% Define helper macros a user can change easily
 % Header
-\newcommand{\acvHeaderNameDelim}{\space}
+\newcommand{\acvHeaderNameDelim}{~}
 \newcommand{\acvHeaderAfterNameSkip}{.4mm}
 \newcommand{\acvHeaderAfterPositionSkip}{.4mm}
 \newcommand{\acvHeaderAfterAddressSkip}{2.5mm}
-\newcommand{\acvHeaderIconSep}{\space}
+\newcommand{\acvHeaderIconSep}{~}
 \newcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
 \newcommand{\acvHeaderAfterSocialSkip}{6mm}
 \newcommand{\acvHeaderAfterQuoteSkip}{5mm}
