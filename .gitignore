@@ -16,6 +16,9 @@
 ## Vim & Emacs temp files:
 .*sw[op]
 *~
+## IntelliJ
+.iml
+.idea
 
 ### Mac OS X ###
 ## Mac OS X metadata files:
